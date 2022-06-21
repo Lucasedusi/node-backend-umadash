@@ -33,4 +33,12 @@ export class UserController {
 
 		return res.json({ UserList });
 	}
+
+	async delete(req: Request, res: Response) {
+		const { id } = req.params;
+
+		const user = await prisma.user.delete({ where: { id: String(id) } });
+
+		return res.status(204).json({ user });
+	}
 }
