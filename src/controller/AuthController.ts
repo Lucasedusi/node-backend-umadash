@@ -10,13 +10,13 @@ export class AuthController {
 		const user = await prisma.user.findUnique({ where: { email } });
 
 		if (!user) {
-			return res.json({ error: "User not found" });
+			return res.json({ error: "E-mail Incorreto" });
 		}
 
 		const isValidPassword = await compare(password, user.password);
 
 		if (!isValidPassword) {
-			return res.json({ error: "Incorrect password" });
+			return res.json({ error: "Senha Incorreta" });
 		}
 
 		const token = sign({ id: user.id }, "dc53fc4f621c80bdc2fa0329a6123708", {
