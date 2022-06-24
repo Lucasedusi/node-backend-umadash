@@ -34,6 +34,20 @@ export class UserController {
 		return res.json({ UserList });
 	}
 
+	async update(req: Request, res: Response) {
+		const { id } = req.params;
+		const { name, email, password } = req.body;
+
+		const hashPassword = await hash(password, 8);
+
+		const user = await prisma.user.update({
+			where: { id: String(id) },
+			data: { name: name, email: email, password: hashPassword },
+		});
+
+		return res.status(200).json({ user });
+	}
+
 	async delete(req: Request, res: Response) {
 		const { id } = req.params;
 
