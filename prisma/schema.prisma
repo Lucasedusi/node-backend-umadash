@@ -16,3 +16,18 @@ model User {
   email    String @unique
   password String
 }
+
+model People {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  email          String
+  birthday       DateTime
+  gender         String
+  address        String
+  phone          String
+  marital_status String
+  rg             String
+  cpf            String   @unique
+  church         String
+  created_at     DateTime @default(now())
+}

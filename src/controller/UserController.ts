@@ -1,7 +1,6 @@
 import { hash } from "bcryptjs";
 import { Request, Response } from "express";
 import { prisma } from "../utils/prisma";
-import { ObjectID } from "bson";
 
 export class UserController {
 	async store(req: Request, res: Response) {
