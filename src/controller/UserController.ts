@@ -1,12 +1,11 @@
 import { hash } from "bcryptjs";
 import { Request, Response } from "express";
 import { prisma } from "../utils/prisma";
-
-import { v4 as uuidv4 } from "uuid";
+import { ObjectID } from "bson";
 
 export class UserController {
 	async store(req: Request, res: Response) {
-		const { name, email, password } = req.body;
+		const { id, name, email, password } = req.body;
 
 		const userExists = await prisma.user.findUnique({ where: { email } });
 
@@ -18,7 +17,7 @@ export class UserController {
 
 		const user = await prisma.user.create({
 			data: {
-				id: uuidv4(),
+				id,
 				name,
 				email,
 				password: hashPassword,
