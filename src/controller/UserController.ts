@@ -4,26 +4,30 @@ import { prisma } from "../utils/prisma";
 
 export class UserController {
 	async store(req: Request, res: Response) {
-		const { id, name, email, password } = req.body;
+		try {
+			const { id, name, email, password } = req.body;
 
-		const userExists = await prisma.user.findUnique({ where: { email } });
+			const userExists = await prisma.user.findUnique({ where: { email } });
 
-		if (userExists) {
-			return res.json({ error: "User Exists" });
+			if (userExists) {
+				return res.json({ error: "User Exists" });
+			}
+
+			const hashPassword = await hash(password, 8);
+
+			const user = await prisma.user.create({
+				data: {
+					id,
+					name,
+					email,
+					password: hashPassword,
+				},
+			});
+
+			return res.json({ user });
+		} catch (error) {
+			return res.json({ error: "Error" });
 		}
-
-		const hashPassword = await hash(password, 8);
-
-		const user = await prisma.user.create({
-			data: {
-				id,
-				name,
-				email,
-				password: hashPassword,
-			},
-		});
-
-		return res.json({ user });
 	}
 
 	async index(req: Request, res: Response) {
@@ -33,24 +37,30 @@ export class UserController {
 	}
 
 	async update(req: Request, res: Response) {
-		const { id } = req.params;
-		const { name, email, password } = req.body;
+		try {
+			const { id } = req.params;
+			const { name, email, password } = req.body;
 
-		const hashPassword = await hash(password, 8);
+			const hashPassword = await hash(password, 8);
 
-		const user = await prisma.user.update({
-			where: { id: String(id) },
-			data: { name: name, email: email, password: hashPassword },
-		});
+			const user = await prisma.user.update({
+				where: { id: String(id) },
+				data: { name: name, email: email, password: hashPassword },
+			});
 
-		return res.status(200).json({ user });
+			return res.status(200).json({ user });
+		} catch (error) {
+			return res.json({ error: "Error" });
+		}
 	}
 
 	async delete(req: Request, res: Response) {
-		const { id } = req.params;
+		try {
+			const { id } = req.params;
 
-		const user = await prisma.user.delete({ where: { id: String(id) } });
+			const user = await prisma.user.delete({ where: { id: String(id) } });
 
-		return res.status(204).json({ user });
+			return res.status(204).json({ user });
+		} catch (error) {}
 	}
 }
