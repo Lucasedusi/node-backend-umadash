@@ -1,13 +1,17 @@
 import { Router } from "express";
-import { AuthController } from "../controller/AuthController";
-import { UserController } from "../controller/UserController";
-import { PeopleController } from "../controller/PeopleController";
+
 import { AuthMiddlewares } from "../middleware/auth";
+
+import { AuthController } from "../controllers/AuthController";
+import { UserController } from "../controllers/UserController";
+import { PeopleController } from "../controllers/PeopleController";
+import { EventController } from "../controllers/EventController";
 
 const userController = new UserController();
 const authController = new AuthController();
 
 const peopleController = new PeopleController();
+const eventController = new EventController();
 
 export const router = Router();
 
@@ -20,5 +24,8 @@ router.get("/peoples", peopleController.index);
 router.post("/peoples", peopleController.store);
 router.put("/peoples/:id", peopleController.update);
 router.delete("/peoples/:id", peopleController.delete);
+
+router.get("/events", eventController.index);
+router.post("/events", eventController.store);
 
 router.post("/auth", authController.authenticate);
