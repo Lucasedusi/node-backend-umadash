@@ -36,12 +36,6 @@ export class UserController {
 		const { id } = req.params;
 		const { name, email, password } = req.body;
 
-		const userExists = await prisma.user.findUnique({ where: { id } });
-
-		if (!userExists) {
-			return res.json({ error: "User not found" });
-		}
-
 		const hashPassword = await hash(password, 8);
 
 		const user = await prisma.user.update({
@@ -54,12 +48,6 @@ export class UserController {
 
 	async delete(req: Request, res: Response) {
 		const { id } = req.params;
-
-		const userExists = await prisma.user.findUnique({ where: { id } });
-
-		if (!userExists) {
-			return res.json({ error: "User not found" });
-		}
 
 		const user = await prisma.user.delete({ where: { id: String(id) } });
 

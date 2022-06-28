@@ -18,5 +18,7 @@ router.delete("/users/:id", userController.delete);
 
 router.get("/peoples", peopleController.index);
 router.post("/peoples", peopleController.store);
+router.put("/peoples/:id", peopleController.update);
+router.delete("/peoples/:id", peopleController.delete);
 
 router.post("/auth", authController.authenticate);
