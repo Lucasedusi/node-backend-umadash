@@ -27,5 +27,7 @@ router.delete("/peoples/:id", peopleController.delete);
 
 router.get("/events", eventController.index);
 router.post("/events", eventController.store);
+router.put("/events/:id", eventController.update);
+router.delete("/events/:id", eventController.delete);
 
 router.post("/auth", authController.authenticate);
